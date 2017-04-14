@@ -1,5 +1,6 @@
 package com.example.asus.a0412_shuxingdonghua;
 
+import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +14,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button button2;
     private Button button3;
     private Button button4;
+    private Button button5;
     private ImageView imageview;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,12 +28,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         button2 = (Button) findViewById(R.id.button2);
         button3 = (Button) findViewById(R.id.button3);
         button4 = (Button) findViewById(R.id.button4);
+        button5 = (Button) findViewById(R.id.button5);
         imageview= (ImageView) findViewById(R.id.image);
         button.setOnClickListener(this);
         button2.setOnClickListener(this);
         button3.setOnClickListener(this);
         button4.setOnClickListener(this);
-
+        button5.setOnClickListener(this);
     }
 
     @Override
@@ -51,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.button2:
                 //坐旋转动画
-                ObjectAnimator rotation=ObjectAnimator.ofFloat(imageview,"rotationY",new float[]{90f,180f,270f,360f});
+                ObjectAnimator rotation=ObjectAnimator.ofFloat(imageview,"rotationX",new float[]{90f,180f,270f,360f});
                 //动画时间
                 rotation.setDuration(2000);
                 rotation.setRepeatMode(ObjectAnimator.RESTART);
@@ -74,6 +77,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 tran.setRepeatCount(1);
                 tran.start();
                 break;
+            case R.id.button5:
+                //组合动画
+                //----------平移
+                ObjectAnimator animator = ObjectAnimator.ofFloat(imageview,"translationX",-500f,0f);
+                //----------旋转
+                ObjectAnimator rotate = ObjectAnimator.ofFloat(imageview,"rotation",0f,360f);
+                //----------透明
+                ObjectAnimator fadelnout = ObjectAnimator.ofFloat(imageview,"alpha",1f,0f,1f);
+                //实现组合动画的控件
+                AnimatorSet animSet = new AnimatorSet();
+                animSet.play(rotate).with(fadelnout).after(animator);
+                animSet.setDuration(5000);
+                animSet.start();
+
         }
     }
 }
